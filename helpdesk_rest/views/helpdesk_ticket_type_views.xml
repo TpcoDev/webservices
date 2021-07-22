@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.view.form.inherit</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_name']" position="after">
+                    <field name="helpdesk_company_id"/>
+                    <field name="helpdesk_branch_office_id"/>
+                </xpath>
+
+                <xpath expr="//field[@name='ticket_type_id']" position="before">
+                    <field name="helpdesk_category_id"/>
+                    <field name="numticket_UserCore"/>
+                </xpath>
+
+                <xpath expr="//field[@name='priority']" position="after">
+                    <field name="center_cost"/>
+                    <field name="anexo"/>
+                    <field name="email_cc_ids" widget="many2many_tags"/>
+                    <field name="attachment_file" widget="binary"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="helpdesk_ticket_type_view_tree_inherit" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.type.view.tree.inherit</field>
+            <field name="model">helpdesk.ticket.type</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_type_view_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="helpdesk_category_id"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
