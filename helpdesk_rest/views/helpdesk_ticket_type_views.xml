@@ -23,7 +23,6 @@
                     <field name="center_cost"/>
                     <field name="anexo"/>
                     <field name="email_cc_ids" widget="many2many_tags"/>
-                    <field name="attachment_file" widget="binary"/>
                 </xpath>
 
             </field>

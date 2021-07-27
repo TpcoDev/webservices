@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_helpdesk_rest_company,helpdesk_rest.company,model_helpdesk_company,,1,1,1,1
-access_helpdesk_rest_category,helpdesk_rest.category,model_helpdesk_category,,1,1,1,1
-access_helpdesk_rest_branch_office,helpdesk_rest.branch.office,model_helpdesk_branch_office,,1,1,1,1
-access_helpdesk_rest_emailcc,helpdesk_rest.email.cc,model_helpdesk_email_cc,,1,1,1,1

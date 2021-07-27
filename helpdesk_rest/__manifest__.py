@@ -17,7 +17,7 @@
     'version': '12.0.0.1',
     
     # any module necessary for this one to work correctly
-    'depends': ['contacts', 'helpdesk', 'base_rest', "base_rest_datamodel", "component"],
+    'depends': ['contacts', 'helpdesk', 'base_rest', "component"],
     
     # always loaded
     'data': [
