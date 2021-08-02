@@ -1,6 +1,24 @@
 <odoo>
     <data>
 
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_users_form_inherit" model="ir.ui.view">
+            <field name="name">view.users.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//div[hasclass('oe_title')]" position="inside">
+                    <!-- Add your fields or attributes here -->
+                    <group>
+                        <field name="id_usercore_tecnico"/>
+                    </group>
+
+                </xpath>
+
+            </field>
+        </record>
+
         <record id="helpdesk_company_action" model="ir.actions.act_window">
             <field name="name">Helpdesk Company</field>
             <field name="type">ir.actions.act_window</field>
@@ -22,9 +40,12 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="helpdesk_company_menu" action="helpdesk_company_action" sequence="10" parent="helpdesk.helpdesk_menu_config"/>
-        <menuitem id="helpdesk_branch_office_menu" action="helpdesk_branch_office_action" sequence="11" parent="helpdesk.helpdesk_menu_config"/>
-        <menuitem id="helpdesk_category_menu" action="helpdesk_category_action" sequence="12" parent="helpdesk.helpdesk_menu_config"/>
+        <menuitem id="helpdesk_company_menu" action="helpdesk_company_action" sequence="10"
+                  parent="helpdesk.helpdesk_menu_config"/>
+        <menuitem id="helpdesk_branch_office_menu" action="helpdesk_branch_office_action" sequence="11"
+                  parent="helpdesk.helpdesk_menu_config"/>
+        <menuitem id="helpdesk_category_menu" action="helpdesk_category_action" sequence="12"
+                  parent="helpdesk.helpdesk_menu_config"/>
 
     </data>
 </odoo>

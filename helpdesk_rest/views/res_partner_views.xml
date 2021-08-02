@@ -8,6 +8,7 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="id_usercore"/>
                     <field name="helpdesk_branch_office_id"/>
                     <field name="helpdesk_company_id"/>
                     <field name="center_cost"/>

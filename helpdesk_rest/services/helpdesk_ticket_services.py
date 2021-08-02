@@ -5,6 +5,8 @@ from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.component.core import Component
 
+from odoo import SUPERUSER_ID
+
 
 class HelpdeskTicketService(Component):
     _inherit = "base.rest.service"
@@ -94,13 +96,24 @@ class HelpdeskTicketService(Component):
         email_cc = []
         
         if params.get('id_usercore', False) and not partner:
-            partner = Partner_obj.search([('id', '=', params['id_usercore'])])
+            partner = Partner_obj.search([('id_usercore', '=', params['id_usercore'])])
         
         if params.get('rut', False) and not partner:
             partner = Partner_obj.search([('vat', '=', params['rut'])])
         
         if params.get('id_usercore_tecnico', False):
-            user = Users_obj.search([('id', '=', params['id_usercore_tecnico'])])
+            user = Users_obj.search([('id_usercore_tecnico', '=', params['id_usercore_tecnico'])])
+            
+            if not user:
+                admin = self.env['res.users'].sudo().browse(SUPERUSER_ID)
+                self.env['mail.thread'].message_post(
+                    subject="Missing id_usercore_tecnico",
+                    body=f"El id_usercore_tecnico {params['id_usercore_tecnico']} no existe en ningun usuario",
+                    partner_ids=[admin.partner_id.id],
+                    subtype='mail.mt_comment',
+                    message_type='notification',
+                    notif_layout='mail.mail_notification_light',
+                )
         
         if params.get('tipoticket', False):
             ticket_type = Tickettype_obj.search([('name', '=', params['tipoticket'])])
@@ -109,14 +122,15 @@ class HelpdeskTicketService(Component):
             Sucursal = self.env['helpdesk.branch.office'].search([('name', '=', params.get('sucursal'))])
             Empresa = self.env['helpdesk.company'].search([('name', '=', params.get('empresa'))])
             partner = Partner_obj.create({
+                'id_usercore': params.get('id_usercore', ""),
                 'name': params.get('nombre', ""),
                 'vat': params.get('rut', ""),
                 'function': params.get('cargo', ""),
                 'email': params.get('correo', ""),
                 'mobile': params.get('celular' ""),
                 'center_cost': params.get('centro_costo', ""),
-                'helpdesk_branch_office_id': Sucursal.id,
-                'helpdesk_company_id': Empresa.id,
+                'helpdesk_branch_office_id': Sucursal.id if Sucursal else False,
+                'helpdesk_company_id': Empresa.id if Empresa else False,
                 'street': params.get('direccion_completa', ""),
             })
         
@@ -164,7 +178,7 @@ class HelpdeskTicketService(Component):
             "name": {"type": "string", "required": False, "empty": False},
             "description": {"type": "string", "required": False, "empty": False},
             "priority": {"type": "string", "required": False, "empty": False},
-            "id_usercore": {"type": "integer", "required": False, "empty": False},
+            "id_usercore": {"type": "string", "required": False, "empty": False},
             "rut": {"type": "string", "required": False, "empty": False},
             "nombre": {"type": "string", "required": False, "empty": False},
             "cargo": {"type": "string", "required": False, "empty": False},
@@ -210,6 +224,9 @@ class HelpdeskTicketService(Component):
                                 "type": "apiKey",
                                 "in": "header",
                                 "name": "api_key",
+                                "required": True,
+                                "schema": {"type": "string"},
+                                "style": "simple",
                             },
                             "basicAuth": {
                                 "type": "http",

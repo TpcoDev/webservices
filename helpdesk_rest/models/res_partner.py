@@ -6,6 +6,8 @@ from odoo import fields, models, api
 class ResPartner(models.Model):
     _inherit = 'res.partner'
     
+    id_usercore = fields.Char()
+    
     helpdesk_branch_office_id = fields.Many2one(
         comodel_name='helpdesk.branch.office',
         string='Helpdesk Branch Office',
